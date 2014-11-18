@@ -1,4 +1,6 @@
 # Dara Elass
+# This script is to gather data for my music analysis project
+# It creates pickles of artist and song metadata
 
 from auth_ids import echonest_API_key, spotify_API_key
 from pyechonest import song, artist, config
