@@ -41,7 +41,6 @@ def get_basic_data(data):
 	return mean, count, maximums, minimums
 
 def create_clusters(X):
-	# model = MiniBatchKMeans(k,batch_size=1000,max_iter=500).fit(X)
     model = DBSCAN(eps=0.7,min_samples=3)
     clusters = model.fit_predict(X)	
     create_pickle(clusters,'clusters.pkl')
@@ -68,56 +67,56 @@ total_songs = [songs_per_country[country] for country in used_countries] # array
 # exploratory analyses
 ###################################
 
-# mean,count,maxes,mins = get_basic_data(grouped_songs)
+mean,count,maxes,mins = get_basic_data(grouped_songs)
 
-# # create bar graph of number of songs collected per country
-# data = Data([Bar(x=used_countries,y=total_songs)])
-# py.plot(data,filename = 'songs per country')
+# create bar graph of number of songs collected per country
+data = Data([Bar(x=used_countries,y=total_songs)])
+py.plot(data,filename = 'songs per country')
 
-# # create box plots of each focus field by country
-# for field in focus_fields:
-# 	data = Data()
-# 	for country in used_countries:
-# 		idx = songs['country'].str.contains(country)
-# 		data.append(Box(y=songs[idx][field],name=country))
-# 	py.iplot(data,filename =field+' by country')
-# 	print 'finished creating plot for ' + field
+# create box plots of each focus field by country
+for field in focus_fields:
+	data = Data()
+	for country in used_countries:
+		idx = songs['country'].str.contains(country)
+		data.append(Box(y=songs[idx][field],name=country))
+	py.iplot(data,filename =field+' by country')
+	print 'finished creating plot for ' + field
 
-# # create box plots of each focus field by country (using focus fields 2)
-# for field in focus_fields_2:
-# 	data = Data()
-# 	for country in used_countries:
-# 		idx = songs['country'].str.contains(country)
-# 		data.append(Box(y=songs[idx][field],name=country))
-# 	py.iplot(data,filename =field+' by country')
-# 	print 'finished creating plot for ' + field
+# create box plots of each focus field by country (using focus fields 2)
+for field in focus_fields_2:
+	data = Data()
+	for country in used_countries:
+		idx = songs['country'].str.contains(country)
+		data.append(Box(y=songs[idx][field],name=country))
+	py.iplot(data,filename =field+' by country')
+	print 'finished creating plot for ' + field
 
-# # create bar chart for mode (because it's a binary variable)
-# grouped_country_mode = songs.groupby(['country','mode'])
-# trace1 = Bar(x=used_countries,y=[grouped_country_mode.country.count()[country][0]/float(total_songs[i]) for i, country in enumerate(used_countries)],name='Minor') # mode = 0
-# trace2 = Bar(x=used_countries,y=[grouped_country_mode.country.count()[country][1]/float(total_songs[i]) for i, country in enumerate(used_countries)],name='Major') # mode = 1
-# data = Data([trace1, trace2])
-# layout = Layout(barmode='group')
-# fig = Figure(data=data, layout=layout)
-# py.plot(fig, filename='mode by country normalized')
+# create bar chart for mode (because it's a binary variable)
+grouped_country_mode = songs.groupby(['country','mode'])
+trace1 = Bar(x=used_countries,y=[grouped_country_mode.country.count()[country][0]/float(total_songs[i]) for i, country in enumerate(used_countries)],name='Minor') # mode = 0
+trace2 = Bar(x=used_countries,y=[grouped_country_mode.country.count()[country][1]/float(total_songs[i]) for i, country in enumerate(used_countries)],name='Major') # mode = 1
+data = Data([trace1, trace2])
+layout = Layout(barmode='group')
+fig = Figure(data=data, layout=layout)
+py.plot(fig, filename='mode by country normalized')
 
-# # create bar chart for key (because looking at the keys as letters and distribution is better than box plot)
-# grouped_country_key = songs.groupby(['country','key'])
-# data = Data()
-# keys = ['c','c-sharp','d','e-flat','e','f','f-sharp','g','a-flat','a','b-flat','b']
-# for i in range(12): # there are 11 keys (0-11: c,c#,d,e-flat,f,f#,g,a-flat,a,b-flat,b)
-# 	data.append(Bar(x=used_countries,y=[grouped_country_key.country.count()[country][i] for country in used_countries],name=keys[i]))
-# layout = Layout(barmode='group')
-# fig = Figure(data=data, layout=layout)
-# py.plot(fig, filename='key by country - bar')
+# create bar chart for key (because looking at the keys as letters and distribution is better than box plot)
+grouped_country_key = songs.groupby(['country','key'])
+data = Data()
+keys = ['c','c-sharp','d','e-flat','e','f','f-sharp','g','a-flat','a','b-flat','b']
+for i in range(12): # there are 11 keys (0-11: c,c#,d,e-flat,f,f#,g,a-flat,a,b-flat,b)
+	data.append(Bar(x=used_countries,y=[grouped_country_key.country.count()[country][i] for country in used_countries],name=keys[i]))
+layout = Layout(barmode='group')
+fig = Figure(data=data, layout=layout)
+py.plot(fig, filename='key by country - bar')
 
-# # create line graph for keys by country
-# grouped_country_key = songs.groupby(['country','key'])
-# data = Data()
-# keys = ['c','c-sharp','d','e-flat','e','f','f-sharp','g','a-flat','a','b-flat','b']
-# for i in range(12): # there are 11 keys (0-11: c,c#,d,e-flat,f,f#,g,a-flat,a,b-flat,b)
-# 	data.append(Scatter(x=used_countries,y=[grouped_country_key.country.count()[country][i]/float(total_songs[j]) for j,country in enumerate(used_countries)],name=keys[i],mode='lines+markers'))
-# py.plot(data, filename='key by country - line')
+# create line graph for keys by country
+grouped_country_key = songs.groupby(['country','key'])
+data = Data()
+keys = ['c','c-sharp','d','e-flat','e','f','f-sharp','g','a-flat','a','b-flat','b']
+for i in range(12): # there are 11 keys (0-11: c,c#,d,e-flat,f,f#,g,a-flat,a,b-flat,b)
+	data.append(Scatter(x=used_countries,y=[grouped_country_key.country.count()[country][i]/float(total_songs[j]) for j,country in enumerate(used_countries)],name=keys[i],mode='lines+markers'))
+py.plot(data, filename='key by country - line')
 
 ###################################
 # starting analysis/clustering
@@ -133,26 +132,14 @@ songs = key_dummies.combine_first(songs) # merge data frames
 # songs = songs.dropna()
 X = songs[features] # get features columns
 X = X.dropna() # make sure there are no NA values
-# k = 300 # number of clusters
 model,clusters = create_clusters(scale(X)) # create clusters/get array with cluster assignment
 cluster_sizes = calc_cluster_sizes(clusters)
 print 'cluster sizes:', cluster_sizes
-# cluster_centers = model.cluster_centers_
 cluster_sizes = calc_cluster_sizes(clusters)
-center_names = []
-countries_dist = []
-energy_dist = []
-liveness_dist = []
-tempo_dist = []
-speechiness_dist = []
-acousticness_dist = []
-danceability_dist = []
-instrumentalness_dist = []
-duration_dist = []
-loudness_dist = []
-valence_dist = []
-mode_dist = []
-key_dist = []
+
+countries_count = defaultdict(int)
+for country in songs.country:
+    countries_count[country] += 1
 
 for p,(cluster_number,cluster_size) in enumerate(cluster_sizes[:26]): # look at the 10 biggest clusters
     if cluster_number != -1:
@@ -173,25 +160,9 @@ for p,(cluster_number,cluster_size) in enumerate(cluster_sizes[:26]): # look at 
         print 'cluster:',cluster_number
         print 'number of songs:', cluster_size
         X_this_cluster = X[clusters == cluster_number]
-        # distances = np.array(pairwise_distances(X_this_cluster, cluster_centers[cluster_number]))
-        # indices_of_ordered_distances = [i[0] for i in sorted(enumerate(distances), key=lambda x:x[1])]  # order distances smallest to largest, get indices
-        # print indices_of_ordered_distances
-        # order_of_the_closest_song = distances.argmin() 
         indices_of_cluster_songs = X_this_cluster.index.tolist() 
         print indices_of_cluster_songs
-        # id_of_closest =  indices_of_cluster_songs[ order_of_the_closest_song ]
-        # center_names.append((songs.loc[id_of_closest]['song_name'],songs.loc[id_of_closest]['artist_name']))
-        # print 'center of cluster: ' + songs.loc[id_of_closest]['song_name'] + ' BY ' + songs.loc[id_of_closest]['artist_name'] + ' FROM ' + songs.loc[id_of_closest]['country']
-        # num_songs_to_show = 10
-        # print str(num_songs_to_show) + ' songs in the middle of cluster, including center:'
-        # for i in range(num_songs_to_show):
-        #     order_of_the_closest_song = indices_of_ordered_distances[i]
-        #     id_of_closest =  indices_of_cluster_songs[ order_of_the_closest_song ]
-        #     print songs.loc[id_of_closest]['song_name'] + ' BY ' + songs.loc[id_of_closest]['artist_name'] + ' FROM ' + songs.loc[id_of_closest]['country']
-        # print
         for j in range(cluster_size):
-            # order_of_the_closest_song = indices_of_ordered_distances[j]
-            # id_of_closest =  indices_of_cluster_songs[order_of_the_closest_song]
             id_of_closest = indices_of_cluster_songs[j]
             countries_dist.append(songs.loc[id_of_closest]['country'])
             energy_dist.append(songs.loc[id_of_closest]['energy'])
@@ -212,6 +183,7 @@ for p,(cluster_number,cluster_size) in enumerate(cluster_sizes[:26]): # look at 
         countries_dist_count = defaultdict(int)
         for country in countries_dist:
             countries_dist_count[country] += 1
+
         f, axarr = plt.subplots(3,4)
         axarr[0,0].bar(range(len(used_countries)),[countries_dist_count[country] for country in used_countries])
         axarr[0,0].set_title('Countries')
@@ -256,19 +228,43 @@ for p,(cluster_number,cluster_size) in enumerate(cluster_sizes[:26]): # look at 
         plt.figure()
         plt.hist(songs.energy,normed=True)
         plt.hist(energy_dist,normed=True)
+        plt.ylabel('frequency')
         plt.savefig('ClusterNumber_'+str(cluster_number)+'_energy.png')
+
         plt.figure()
         plt.hist(songs.instrumentalness.dropna(),normed=True)
         plt.hist(instrumentalness_dist,normed=True)
+        plt.ylabel('frequency')
         plt.savefig('ClusterNumber_'+str(cluster_number)+'_instrumentalness.png')
+
         plt.figure()
         plt.hist(songs.tempo.dropna(),normed=True)
         plt.hist(tempo_dist,normed=True)
+        plt.ylabel('frequency')
         plt.savefig('ClusterNumber_'+str(cluster_number)+'_tempo.png')
+
         plt.figure()
         plt.hist(songs.acousticness.dropna(),normed=True)
         plt.hist(acousticness_dist,normed=True)
+        plt.ylabel('frequency')
         plt.savefig('ClusterNumber_'+str(cluster_number)+'_acousticness.png')
 
+        plt.figure()
+        plt.hist(songs.valence.dropna(),normed=True)
+        plt.hist(valence_dist,normed=True)
+        plt.ylabel('frequency')
+        plt.savefig('ClusterNumber_'+str(cluster_number)+'_valence.png')
 
+        plt.figure()
+        plt.hist(songs.danceability.dropna(),normed=True)
+        plt.hist(danceability_dist,normed=True)
+        plt.ylabel('frequency')
+        plt.savefig('ClusterNumber_'+str(cluster_number)+'_danceability.png')
+
+        plt.figure()
+        plt.bar(range(len(used_countries)),[countries_dist_count[country] for country in used_countries])
+        plt.xticks(range(len(used_countries)), used_countries, rotation=45)        
+        plt.ylabel('count')
+        plt.xlabel('country')
+        plt.savefig('ClusterNumber_'+str(cluster_number)+'_countries.png')
 
