@@ -5,6 +5,6 @@ This is my final project at my data science bootcamp at Metis. In this project I
 
 <b>In this respository...</b>
 
-data_gathering.py - this script collects 500+ artist names from the chosen countries, and then gathers 5 songs per artist and puts all the song metadata in a pandas dataframe.
+data_gathering.py - this script collects 500+ artist names from the chosen countries, and then gathers 5 songs per artist and puts all the song metadata in a pandas dataframe. I collected metadata for about 40,000 songs.
 
-I will update the README as I complete this project.
+data_analysis.py - this script uses DBSCAN to create clusters of the songs using the following features: energy, liveness, tempo, speechiness, acousticness, danceability, instrumentalness, duration, loudness, valence, key, and mode.
